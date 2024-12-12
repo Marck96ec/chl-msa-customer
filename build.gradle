@@ -42,14 +42,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0'
 	implementation 'org.springdoc:springdoc-openapi-starter-common:2.1.0'
-	implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
 	implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
 
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-r2dbc', version: '3.1.0'
+	implementation group: 'org.postgresql', name: 'r2dbc-postgresql', version: '1.0.1.RELEASE'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
+	implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.0.5'
+
+
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
-	runtimeOnly 'org.postgresql:r2dbc-postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'

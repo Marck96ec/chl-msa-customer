@@ -2,7 +2,28 @@ spring:
   application:
     name: chl-msa-customer
 
-  r2dbc:
-    url: r2dbc:postgresql://${CDP_POSTGRESQL_HOST:localhost}:${CDP_POSTGRESQL_PORT:3539}/${CDP_POSTGRESQL_DB:postgres}?ss1Mode=require
-    username: ${POSTGRESQL_USERNAME:""}
-    password: ${POSTGRESQL_PASSWORD:"password"}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: "classpath:db/migration"
+    sql-migration-suffixes: ".sql"
+    sql-migration-prefix: V
+    sql-migration-separator: "__"
+    url: jdbc:postgresql://localhost:3539/postgres
+    user: ${POSTGRESQL_USERNAME:postgres}
+    password: ${POSTGRESQL_PASSWORD:password}
+    schemas: ${POSTGRESQL_SCHEMA:challenge}
+
+challenge:
+  postgresql:
+    host: ${ONB_POSTGRESQL_HOST:localhost}
+    port: ${ONB_POSTGRESQL_PORT:3539}
+    dbname: ${POSTGRESQL_DBNAME:postgres}
+    schema: ${POSTGRESQL_SCHEMA:challenge}
+    username: ${POSTGRESQL_USERNAME:postgres}
+    password: ${POSTGRESQL_PASSWORD:password}
+    ssl-mode: ${POSTGRESQL_SSL:disable}
+
+logging:
+  level:
+    org.flywaydb: DEBUG

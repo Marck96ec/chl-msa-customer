@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: chl-msa-customer
+
+  r2dbc:
+    url: r2dbc:postgresql://${CDP_POSTGRESQL_HOST:localhost}:${CDP_POSTGRESQL_PORT:3539}/${CDP_POSTGRESQL_DB:postgres}?ss1Mode=require
+    username: ${POSTGRESQL_USERNAME:""}
+    password: ${POSTGRESQL_PASSWORD:"password"}

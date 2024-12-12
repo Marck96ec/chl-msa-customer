@@ -33,21 +33,24 @@ public class CustomerController implements CustomersApi {
 
     @Override
     public Mono<ResponseEntity<Void>> deleteCustomer(Integer id, ServerWebExchange exchange) {
-        return null;
+        return customerService.deleteCustomer(id)
+                .then(Mono.just(ResponseEntity.noContent().<Void>build()));
     }
 
     @Override
     public Mono<ResponseEntity<Flux<CustomerPersonResponse>>> getAllCustomers(ServerWebExchange exchange) {
-        return null;
+        return Mono.just(ResponseEntity.ok(customerService.getAllCustomers()));
     }
 
     @Override
     public Mono<ResponseEntity<CustomerPersonResponse>> getCustomerById(Integer id, ServerWebExchange exchange) {
-        return null;
+        return customerService.getCustomerById(id)
+                .map(ResponseEntity::ok);
     }
 
     @Override
     public Mono<ResponseEntity<CustomerPersonResponse>> updateCustomer(Integer id, CustomerPerson customerPerson, ServerWebExchange exchange) {
-        return null;
+        return customerService.updateCustomer(id, customerPerson)
+                .map(ResponseEntity::ok);
     }
 }

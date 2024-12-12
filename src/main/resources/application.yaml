@@ -2,6 +2,7 @@ spring:
   application:
     name: chl-msa-customer
 
+
   flyway:
     enabled: true
     baseline-on-migrate: true

@@ -274,6 +274,8 @@ components:
     CustomerPersonResponse:
       type: object
       properties:
+        person_id:
+          type: string
         status:
           type: boolean
         name:

@@ -1,3 +1,5 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
 buildscript {
 	repositories {
 		mavenCentral()
@@ -14,6 +16,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.0'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'info.solidsoft.pitest' version '1.15.0'
 }
 
 group = 'com.challenge'
@@ -61,9 +64,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	testImplementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.9.0'
+	testImplementation 'org.pitest:pitest-junit5-plugin:1.2.0'
 }
 
-tasks.register('buildSpringServer', org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+tasks.register('buildSpringServer', GenerateTask) {
 	generatorName = "spring"
 	inputSpec = "$rootDir/src/main/resources/openapi.yaml".toString()
 	outputDir = "$buildDir/generated".toString()
@@ -105,6 +111,15 @@ sourceSets.main.java.srcDirs = ["$buildDir/generated/src/main/java", "src/main/j
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+pitest {
+	targetClasses = ['com.challenge.customer.*']
+	pitestVersion = '1.9.0'
+	threads = 4
+	outputFormats = ['XML', 'HTML']
+	timestampedReports = false
+	excludedClasses = ['*.dto.', '*.mapper.', '*.exception.', '*.configuration.', '*.helper.', '*.enums.', '*.entity.', '*.domain.']
 }
 
 

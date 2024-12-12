@@ -15,6 +15,7 @@ spring:
     schemas: ${POSTGRESQL_SCHEMA:challenge}
 
 challenge:
+  base-path: /api/v1/customers
   postgresql:
     host: ${ONB_POSTGRESQL_HOST:localhost}
     port: ${ONB_POSTGRESQL_PORT:3539}

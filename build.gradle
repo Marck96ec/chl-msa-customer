@@ -6,7 +6,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath "org.openapitools:openapi-generator-gradle-plugin:7.0.1"
+		classpath "org.openapitools:openapi-generator-gradle-plugin:7.4.0"
 	}
 }
 
@@ -51,9 +51,13 @@ dependencies {
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
 	implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.0.5'
 
+	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -64,17 +68,34 @@ tasks.register('buildSpringServer', org.openapitools.generator.gradle.plugin.tas
 	inputSpec = "$rootDir/src/main/resources/openapi.yaml".toString()
 	outputDir = "$buildDir/generated".toString()
 	apiPackage = "com.challenge.customer"
+	templateDir = "$rootDir/src/main/resources/openapi-templates"
 	modelPackage = "com.challenge.customer.server.models"
 	library = "spring-boot"
 	configOptions = [
-			useSpringBoot3: "true",
-			serializableModel: "true",
-			dateLibrary: "java8",
-			openApiNullable: "false",
-			configPackage: "com.challenge.customer",
-			sourceFolder: "src/main/java",
-			basePackage: "com.challenge",
-			interfaceOnly: "true"
+			skipDefaultInterface : "true",
+			useSpringBoot3 : "true",
+			useJakartaEe : "true",
+			serializableModel : "true",
+			dateLibrary : "java8",
+			openApiNullable : "false",
+			reactive : "true",
+			apiFirst : "false",
+			delegatePattern : "false",
+			configPackage : "com.pichincha.services.config",
+			sourceFolder : "src/main/java",
+			basePackage : "com.pichincha",
+			disallowAdditionalPropertiesIfNotPresent: "true",
+			interfaceOnly : "true"
+	]
+}
+
+compileJava {
+	dependsOn buildSpringServer
+	options.compilerArgs += [
+			"-Amapstruct.suppressGeneratorTimestamp=true",
+			"-Amapstruct.suppressGeneratorVersionInfoComment=true",
+			"-Amapstruct.verbose=true",
+			"-Amapstruct.defaultComponentModel=spring"
 	]
 }
 

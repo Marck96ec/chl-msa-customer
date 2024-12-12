@@ -13,7 +13,7 @@ public class Customer {
 
     @Id
     private Long customer_id;
-
+    private Long person_id;
     private String password;
     private String status;
 }

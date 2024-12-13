@@ -23,7 +23,7 @@ import static lombok.AccessLevel.PRIVATE;
 @RequestMapping("/api/v1")
 public class CustomerController implements CustomersApi {
 
-    final CustomerService customerService;
+    CustomerService customerService;
 
     @Override
     public Mono<ResponseEntity<CustomerPersonResponse>> createCustomer(CustomerPerson customerPerson, ServerWebExchange exchange) {
@@ -45,7 +45,8 @@ public class CustomerController implements CustomersApi {
     @Override
     public Mono<ResponseEntity<CustomerPersonResponse>> getCustomerById(Integer id, ServerWebExchange exchange) {
         return customerService.getCustomerById(id)
-                .map(ResponseEntity::ok);
+                .map(ResponseEntity::ok)
+                .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
     }
 
     @Override

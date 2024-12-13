@@ -65,7 +65,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Mono<CustomerPersonResponse> getCustomerById(Integer id) {
-        return personRepository.findById(Long.valueOf(id))
+        return personRepository.findByIdentification(String.valueOf(id))
                 .flatMap(person -> customerRepository.findByPersonId(person.getPerson_id())
                         .map(customer -> customerMapper.toCustomerPersonResponse(customer, person)));
     }

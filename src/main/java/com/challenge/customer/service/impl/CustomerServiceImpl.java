@@ -31,13 +31,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Mono<CustomerPersonResponse> createCustomer(CustomerPerson customerPerson) {
-        Person person = customerMapper.toPersonCreate(customerPerson);
-        return personRepository.save(person)
-                .flatMap(p -> {
-                    Customer customer = customerMapper.toCustomerCreate(p, customerPerson);
-                    return customerRepository.save(customer)
-                            .map(c -> customerMapper.toCustomerPersonResponse(c, p));
-                });
+        return getCustomerById(Integer.valueOf(customerPerson.getIdentification()))
+                .flatMap(existingCustomer -> Mono.<CustomerPersonResponse>error(new RuntimeException("El usuario ya existe")))
+                .switchIfEmpty(Mono.defer(() -> {
+                    Person person = customerMapper.toPersonCreate(customerPerson);
+                    return personRepository.save(person)
+                            .flatMap(p -> {
+                                Customer customer = customerMapper.toCustomerCreate(p, customerPerson);
+                                return customerRepository.save(customer)
+                                        .map(savedCustomer -> customerMapper.toCustomerPersonResponse(savedCustomer, p));
+                            });
+                }));
     }
 
     @Override

@@ -45,10 +45,14 @@ class CustomerServiceImplTest {
     @Test
     void createCustomer_createsCustomerSuccessfully() {
         CustomerPerson customerPerson = new CustomerPerson();
+        customerPerson.setIdentification("1234567890");
         Person person = new Person();
+        person.setPerson_id(1L);
         Customer customer = new Customer();
+        customer.setPerson_id(1L);
         CustomerPersonResponse response = new CustomerPersonResponse();
 
+        when(personRepository.findByIdentification(any(String.class))).thenReturn(Mono.empty());
         when(customerMapper.toPersonCreate(any(CustomerPerson.class))).thenReturn(person);
         when(personRepository.save(any(Person.class))).thenReturn(Mono.just(person));
         when(customerMapper.toCustomerCreate(any(Person.class), any(CustomerPerson.class))).thenReturn(customer);
@@ -68,8 +72,10 @@ class CustomerServiceImplTest {
     @Test
     void createCustomer_handlesPersonRepositorySaveError() {
         CustomerPerson customerPerson = new CustomerPerson();
+        customerPerson.setIdentification("1234567890");
         Person person = new Person();
 
+        when(personRepository.findByIdentification(any(String.class))).thenReturn(Mono.just(person));
         when(customerMapper.toPersonCreate(any(CustomerPerson.class))).thenReturn(person);
         when(personRepository.save(any(Person.class))).thenReturn(Mono.error(new RuntimeException("Save error")));
 
@@ -83,9 +89,11 @@ class CustomerServiceImplTest {
     @Test
     void createCustomer_handlesCustomerRepositorySaveError() {
         CustomerPerson customerPerson = new CustomerPerson();
+        customerPerson.setIdentification("1234567890");
         Person person = new Person();
         Customer customer = new Customer();
 
+        when(personRepository.findByIdentification(any(String.class))).thenReturn(Mono.just(person));
         when(customerMapper.toPersonCreate(any(CustomerPerson.class))).thenReturn(person);
         when(personRepository.save(any(Person.class))).thenReturn(Mono.just(person));
         when(customerMapper.toCustomerCreate(any(Person.class), any(CustomerPerson.class))).thenReturn(customer);

@@ -36,15 +36,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/CustomerPersonResponse'
               examples:
-                example1:
-                  value:
-                    - status: true
-                      name: John Doe
-                      gender: masculino
-                      age: "30"
-                      identification: "1234567890"
-                      address: 123 Main St
-                      phone: "5551234567"
+                CustomerPersonResponse-ex1:
+                  $ref: '#/components/examples/CustomerPersonResponse-ex1'
     post:
       tags:
         - customer
@@ -58,16 +51,8 @@ paths:
             schema:
               $ref: '#/components/schemas/CustomerPerson'
             examples:
-              example1:
-                value:
-                  password: password123
-                  status: true
-                  name: John Doe
-                  gender: masculino
-                  age: "30"
-                  identification: "1234567890"
-                  address: 123 Main St
-                  phone: "5551234567"
+              CustomerPersonCreateRequest-ex1:
+                $ref: '#/components/examples/CustomerPersonCreateRequest-ex1'
       responses:
         '201':
           description: successful operation
@@ -76,15 +61,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/CustomerPersonResponse'
               examples:
-                example1:
-                  value:
-                    status: true
-                    name: John Doe
-                    gender: masculino
-                    age: "30"
-                    identification: "1234567890"
-                    address: 123 Main St
-                    phone: "5551234567"
+                CustomerPersonCreateResponse-ex1:
+                  $ref: '#/components/examples/CustomerPersonCreateResponse-ex1'
         '400':
           description: The server could not understand the request because of incorrect syntax
           content:
@@ -118,15 +96,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/CustomerPersonResponse'
               examples:
-                example1:
-                  value:
-                    status: true
-                    name: John Doe
-                    gender: masculino
-                    age: "30"
-                    identification: "1234567890"
-                    address: 123 Main St
-                    phone: "5551234567"
+                CustomerPersonCreateResponse-ex1:
+                  $ref: '#/components/examples/CustomerPersonCreateResponse-ex1'
         '404':
           description: Customer not found
           content:
@@ -158,16 +129,8 @@ paths:
             schema:
               $ref: '#/components/schemas/CustomerPerson'
             examples:
-              example1:
-                value:
-                  password: newpassword123
-                  status: true
-                  name: John Doe
-                  gender: masculino
-                  age: "30"
-                  identification: "1234567890"
-                  address: 123 Main St
-                  phone: "5551234567"
+              CustomerPersonCreateRequest-ex1:
+                $ref: '#/components/examples/CustomerPersonCreateRequest-ex1'
       responses:
         '200':
           description: successful operation
@@ -176,15 +139,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/CustomerPersonResponse'
               examples:
-                example1:
-                  value:
-                    status: true
-                    name: John Doe
-                    gender: masculino
-                    age: "30"
-                    identification: "1234567890"
-                    address: 123 Main St
-                    phone: "5551234567"
+                CustomerPersonCreateResponse-ex1:
+                  $ref: '#/components/examples/CustomerPersonCreateResponse-ex1'
         '404':
           description: Customer not found
           content:
@@ -212,6 +168,41 @@ paths:
       responses:
         '204':
           description: No Content
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                example1:
+                  value:
+                    title: Not Found
+                    detail: Customer not found
+                    status: 404
+  /customers/identification/{identification}:
+    get:
+      tags:
+        - customer
+      summary: Get customer by identification
+      description: Retrieve a single customer by their identification
+      operationId: getCustomerByIdentification
+      parameters:
+        - name: identification
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerPersonResponse'
+              examples:
+                CustomerPersonCreateResponse-ex1:
+                  $ref: '#/components/examples/CustomerPersonCreateResponse-ex1'
         '404':
           description: Customer not found
           content:
@@ -299,3 +290,32 @@ components:
           type: string
         status:
           type: integer
+  examples:
+    CustomerPersonResponse-ex1:
+      value:
+        - status: true
+          name: John Doe
+          gender: masculino
+          age: "30"
+          identification: "1718018870"
+          address: 123 Main St
+          phone: "5551234567"
+    CustomerPersonCreateRequest-ex1:
+      value:
+        password: password123
+        status: true
+        name: John Doe
+        gender: masculino
+        age: "30"
+        identification: "1718018870"
+        address: 123 Main St
+        phone: "5551234567"
+    CustomerPersonCreateResponse-ex1:
+      value:
+        status: true
+        name: John Doe
+        gender: masculino
+        age: "30"
+        identification: "1718018870"
+        address: 123 Main St
+        phone: "5551234567"

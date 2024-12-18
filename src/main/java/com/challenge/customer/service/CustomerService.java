@@ -16,4 +16,6 @@ public interface CustomerService {
     Mono<CustomerPersonResponse> getCustomerById(Integer id);
 
     Mono<Void> deleteCustomer(Integer id);
+
+    Mono<CustomerPersonResponse> getCustomerByIdentification(Integer id);
 }

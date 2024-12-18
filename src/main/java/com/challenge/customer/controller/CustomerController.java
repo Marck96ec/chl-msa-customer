@@ -50,6 +50,14 @@ public class CustomerController implements CustomersApi {
     }
 
     @Override
+    public Mono<ResponseEntity<CustomerPersonResponse>> getCustomerByIdentification(Integer identification, ServerWebExchange exchange) {
+        return customerService.getCustomerByIdentification(identification)
+                .map(ResponseEntity::ok)
+                .switchIfEmpty(Mono.just(ResponseEntity.noContent().build()));
+    }
+
+
+    @Override
     public Mono<ResponseEntity<CustomerPersonResponse>> updateCustomer(Integer id, CustomerPerson customerPerson, ServerWebExchange exchange) {
         return customerService.updateCustomer(id, customerPerson)
                 .map(ResponseEntity::ok);

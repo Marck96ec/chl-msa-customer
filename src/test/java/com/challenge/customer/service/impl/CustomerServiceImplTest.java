@@ -239,7 +239,7 @@ class CustomerServiceImplTest {
         Customer customer = new Customer();
         CustomerPersonResponse response = new CustomerPersonResponse();
 
-        when(personRepository.findByIdentification(any(String.class))).thenReturn(Mono.just(person));
+        when(personRepository.findById(any(Long.class))).thenReturn(Mono.just(person));
         when(customerRepository.findByPersonId(any(Long.class))).thenReturn(Mono.just(customer));
         when(customerMapper.toCustomerPersonResponse(any(Customer.class), any(Person.class))).thenReturn(response);
 
@@ -257,7 +257,7 @@ class CustomerServiceImplTest {
     void getCustomerById_handlesPersonNotFound() {
         Integer id = 1;
 
-        when(personRepository.findByIdentification(any(String.class))).thenReturn(Mono.empty());
+        when(personRepository.findById(any(Long.class))).thenReturn(Mono.empty());
 
         Mono<CustomerPersonResponse> result = customerServiceImpl.getCustomerById(id);
 
@@ -271,7 +271,7 @@ class CustomerServiceImplTest {
         Person person = new Person();
         person.setPerson_id(1L);
 
-        when(personRepository.findByIdentification(any(String.class))).thenReturn(Mono.just(person));
+        when(personRepository.findById(any(Long.class))).thenReturn(Mono.just(person));
         when(customerRepository.findByPersonId(any(Long.class))).thenReturn(Mono.empty());
 
         Mono<CustomerPersonResponse> result = customerServiceImpl.getCustomerById(id);

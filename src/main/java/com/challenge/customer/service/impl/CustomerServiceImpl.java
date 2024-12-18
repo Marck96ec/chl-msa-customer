@@ -31,7 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Mono<CustomerPersonResponse> createCustomer(CustomerPerson customerPerson) {
-        return getCustomerById(Integer.valueOf(customerPerson.getIdentification()))
+        return getCustomerByIdentification(Integer.valueOf(customerPerson.getIdentification()))
                 .flatMap(existingCustomer -> Mono.<CustomerPersonResponse>error(new RuntimeException("El usuario ya existe")))
                 .switchIfEmpty(Mono.defer(() -> {
                     Person person = customerMapper.toPersonCreate(customerPerson);
@@ -69,7 +69,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Mono<CustomerPersonResponse> getCustomerById(Integer id) {
-        return personRepository.findByIdentification(String.valueOf(id))
+        return personRepository.findById(Long.valueOf(id))
                 .flatMap(person -> customerRepository.findByPersonId(person.getPerson_id())
                         .map(customer -> customerMapper.toCustomerPersonResponse(customer, person)));
     }
@@ -82,6 +82,13 @@ public class CustomerServiceImpl implements CustomerService {
                                 .then(personRepository.delete(person))
                         )
                 );
+    }
+
+    @Override
+    public Mono<CustomerPersonResponse> getCustomerByIdentification(Integer id) {
+        return personRepository.findByIdentification(String.valueOf(id))
+                .flatMap(person -> customerRepository.findByPersonId(person.getPerson_id())
+                        .map(customer -> customerMapper.toCustomerPersonResponse(customer, person)));
     }
 
 }

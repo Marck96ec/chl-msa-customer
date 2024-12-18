@@ -9,6 +9,6 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface CustomerRepository extends ReactiveCrudRepository<Customer, Long> {
 
-    @Query("SELECT * FROM chl_customer WHERE person_id = :personId")
+    @Query("SELECT customer_id, person_id, password, status  FROM chl_customer WHERE person_id = :personId")
     Mono<Customer> findByPersonId(Long personId);
 }
